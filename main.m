@@ -1,13 +1,14 @@
 
-% Parámetros main
-dataset = 'A';
+% Parámetros del algoritmo
+dataset = 'E';
 clases = 10;
 trainperc = 0.7;
+iter = 30;
 
 % Parámetros de los autoencoder
 hiddenSize1 = 102;
 hiddenSize2 = 25;
-iter = 5;
+param = [0.013169303537060;94.931090892905760;0.111747065630563];
 
 % Otros
 AccG = zeros(1,iter);
@@ -28,7 +29,7 @@ exactitud = @(confusionMat) (traza(confusionMat)./(fp(confusionMat)+fn(confusion
 for i=1:iter
     % Reordenamiento
     [Xe,Ye,Xv,Yv] = sort_rows(features,target,clases,trainperc); 
-    deepnet = training(hiddenSize1,hiddenSize2,Xe,Ye,0.022,0.97,0.02,0.0002,0.97,0.25);
+    deepnet = training(hiddenSize1,hiddenSize2,Xe,Ye,param(1),param(2),param(3),param(1),param(2),param(3));
     Z = deepnet(Xv); 
     [c,cm] = confusion(Yv,Z);
     % Global Accuracy
@@ -50,3 +51,5 @@ xlabel('Trial number')
 ylabel('Accuracy (%)')
 title('E')
 %}
+
+%save 4gridE AccG Acc Fsc param iter trainperc hiddenSize1 hiddenSize2
