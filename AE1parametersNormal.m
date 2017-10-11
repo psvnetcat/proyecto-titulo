@@ -1,5 +1,5 @@
 % Parámetros del algoritmo
-dataset = ['A'];
+dataset = ['A','B','C','D','E'];
 clases = 10;
 trainperc = 0.7;
 
@@ -8,9 +8,10 @@ hiddenSize1 = 102;
 hiddenSize2 = 25;
 
 % Variables
-AccG = zeros(4,10);
-grid = zeros(6,10);
+AccG = zeros(5,10);
+%grid = zeros(6,10);
 
+%{
 a = 0.0002;
 b = 0.022;
 c = 91;
@@ -25,7 +26,6 @@ grid(4,:) = (b-a).*rand(10,1) + a;
 grid(5,:) = (d-c).*rand(10,1) + c;
 grid(6,:) = (f-e).*rand(10,1) + e;
 
-%{
 % Funciones
 fp = @(confusionMat) sum(confusionMat,1)'-diag(confusionMat);
 fn = @(confusionMat) sum(confusionMat,2)-diag(confusionMat);
@@ -36,9 +36,9 @@ traza = @(confusionMat) repmat(trace(confusionMat),1,clases)';
 exactitud = @(confusionMat) (traza(confusionMat)./(fp(confusionMat)+fn(confusionMat)+traza(confusionMat)))';
 %}
 
-for j=1:size(dataset,1)
+for j=1:size(dataset,2)
     
-    [features,target] = etl_param(2400,50,dataset(j),clases);
+    [features,target] = etl_param(2048,59,dataset(j),clases);
     [Xe,Ye,Xv,Yv] = sort_rows(features,target,clases,trainperc);
     
     for i=1:size(grid,2)

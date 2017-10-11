@@ -1,9 +1,9 @@
 
 % Parámetros del algoritmo
-dataset = 'E';
+dataset = 'A';
 clases = 10;
 trainperc = 0.7;
-iter = 30;
+iter = 5;
 
 % Parámetros de los autoencoder
 hiddenSize1 = 102;
@@ -24,7 +24,7 @@ fscore = @(confusionMat) 2*diag(confusionMat)./(2*diag(confusionMat)+fp(confusio
 traza = @(confusionMat) repmat(trace(confusionMat),1,clases)';
 exactitud = @(confusionMat) (traza(confusionMat)./(fp(confusionMat)+fn(confusionMat)+traza(confusionMat)))';
 
-[features,target] = etl_param(2400,50,dataset,clases);
+[features,target] = etl_param(2048,59,dataset,clases);
 
 for i=1:iter
     % Reordenamiento
