@@ -8,7 +8,7 @@ iter = 30;
 % Parámetros de los autoencoder
 hiddenSize1 = 102;
 hiddenSize2 = 25;
-param = [0.0162906665906445;96.6491152028911;0.130050141545906;0.00467805401358500;97.8639996678380;0.385538479498422];
+param = [0.0140136987737066;98.6471630667665;0.275927505721519;0.0113151582357268;94.0828693469745;0.209272454869506];
 
 % Otros
 AccG = zeros(1,iter);
@@ -38,6 +38,7 @@ for i=1:iter
     Fsc(i,:) = fscore(cm);
     % Accuracy
     Acc(i,:) = exactitud(cm);
+    disp(i)
 end
 
 %{
@@ -46,10 +47,10 @@ plot(1:iter,AccG,'-o');
 legend('testing')
 legend('Location','southwest')
 legend('boxoff')
-ylim([98.5 100])
+ylim([85.5 100])
 xlabel('Trial number')
 ylabel('Accuracy (%)')
-title('E')
+title('A')
 %}
 
-%save rsltEnuevomejorE AccG Acc Fsc param iter trainperc hiddenSize1 hiddenSize2
+%save rsltEgrid6 AccG Acc Fsc param iter trainperc hiddenSize1 hiddenSize2

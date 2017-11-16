@@ -10,13 +10,12 @@ hiddenSize2 = 25;
 [features,target] = etl_param(2048,59,dataset,clases);
 [Xe,Ye,Xv,Yv] = sort_rows(features,target,clases,trainperc); 
 
-t = [0.0162906665906445;96.6491152028911;0.130050141545906;0.00467805401358500;97.8639996678380;0.385538479498422];
-%iter = size(t,1);
-iter = 10;
+t = grid(1:3,:);
+iter = size(t,2);
 arrmse = zeros(1,iter);
 
 for i=1:iter
-    autoenc1 = trainAutoencoder(Xe,hiddenSize1,'MaxEpochs',200,'L2WeightRegularization',t(1),'SparsityRegularization',t(2),'SparsityProportion',t(3),'ShowProgressWindow',false);
+    autoenc1 = trainAutoencoder(Xe,hiddenSize1,'MaxEpochs',200,'L2WeightRegularization',t(1,i),'SparsityRegularization',t(2,i),'SparsityProportion',t(3,i),'ShowProgressWindow',false);
     XReconstructed = predict(autoenc1,Xe);
     arrmse(i) = mse(Xe-XReconstructed);
 end
