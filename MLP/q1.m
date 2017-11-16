@@ -1,16 +1,14 @@
+%Aim   : Training MLP(20,H,3) 
 
-% Parámetros del algoritmo
+% Algorithm: Levenverg-Marquardt
+Nh = 10; % Hidden Nodes
+Epoch = 200; % Epochs
+iter = 1; %Runs to find the best weight
+itime = tic;
 dataset = 'A';
 clases = 10;
 trainperc = 0.7;
-iter = 5;
 
-% Parámetros de los autoencoder
-hiddenSize1 = 102;
-hiddenSize2 = 25;
-param = [0.013169303537060;94.931090892905760;0.111747065630563];
-
-% Otros
 AccG = zeros(1,iter);
 Fsc = zeros(iter,clases);
 Acc = zeros(iter,clases);
@@ -24,13 +22,16 @@ fscore = @(confusionMat) 2*diag(confusionMat)./(2*diag(confusionMat)+fp(confusio
 traza = @(confusionMat) repmat(trace(confusionMat),1,clases)';
 exactitud = @(confusionMat) (traza(confusionMat)./(fp(confusionMat)+fn(confusionMat)+traza(confusionMat)))';
 
-[features,target] = etl_param(2048,59,dataset,clases);
+cd '../'
+[features,target] = etl_param(2400,50,dataset,clases);
+cd 'MLP'
 
 for i=1:iter
-    % Reordenamiento
-    [Xe,Ye,Xv,Yv] = sort_rows(features,target,clases,trainperc); 
-    deepnet = training(hiddenSize1,hiddenSize2,Xe,Ye,param(1),param(2),param(3),param(1),param(2),param(3));
-    Z = deepnet(Xv); 
+    cd '../'
+    [Xe,Ye,Xv,Yv] = sort_rows(features,target,clases,trainperc);
+    cd 'MLP'
+    [net, Tr] = bp_lm(Xe,Ye,Nh,Epoch);
+    Z = sim(net,Xv);
     [c,cm] = confusion(Yv,Z);
     % Global Accuracy
     AccG(1,i) = (1-c)*100;
@@ -52,4 +53,6 @@ ylabel('Accuracy (%)')
 title('E')
 %}
 
-%save 4gridE AccG Acc Fsc param iter trainperc hiddenSize1 hiddenSize2
+ftime = toc(itime);
+
+fprintf('\nEntrenamiento finalizado %f minutos.\n',ftime/60);
